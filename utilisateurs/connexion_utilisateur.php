@@ -1,6 +1,6 @@
 <?php
 
-    $menu = 'utilisateurs';
+    $menu = 'login';
 
     require_once('../templates/header.php');
 ?>

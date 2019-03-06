@@ -1,5 +1,5 @@
 <?php
-    $menu = 'utilisateurs';
+    $menu = 'inscription';
 
     require_once('../templates/header.php');
 
