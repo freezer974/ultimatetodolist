@@ -37,8 +37,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css">
-        <link rel="stylesheet" href="css/animate.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css">
+        <link rel="stylesheet" href="../css/animate.css">
+        <link rel="stylesheet" href="../css/todolist.css">
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg  <?= ($_SESSION['role'] == 'Admin')? 'navbar-light bg-warning':'navbar-dark bg-dark bg-dark'; ?> ">
@@ -53,15 +55,17 @@
                 </li>
             <?php if ($_SESSION['role'] == 'Admin'): ?>
                 <li class="nav-item <?= (($menu == 'roles')? 'active' : ''); ?> " >
-                    <a class="nav-link" href="/roles">Rôles <?= (($menu == 'roles')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="<?= $adresse; ?>roles">Rôles <?= (($menu == 'roles')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
                 <li class="nav-item <?= (($menu == 'utilisateurs')? 'active' : ''); ?>" >
-                    <a class="nav-link" href="/utilisateurs">Utilisateurs <?= (($menu == 'utilisateurs')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="<?= $adresse; ?>utilisateurs">Utilisateurs <?= (($menu == 'utilisateurs')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
             <?php endif;?>
-                <li class="nav-item <?= (($menu == 'ateliers')? 'active' : ''); ?>" >
-                     <a class="nav-link" href="#<?= ($_SESSION['role'] == 'Cuisinier')?'':'' ; ?>">Todolist <?= (($menu == 'ateliers')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+            <?php if ($_SESSION['role'] == 'Membre'): ?>
+                <li class="nav-item <?= (($menu == 'todolist')? 'active' : ''); ?>" >
+                     <a class="nav-link" href="<?= $adresse; ?>todolists">Todolist <?= (($menu == 'todolist')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
+            <?php endif; ?>
             </ul>
 
         <?php if (!empty($_SESSION['role'])): ?>

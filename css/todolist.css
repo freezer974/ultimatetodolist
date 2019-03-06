@@ -1,0 +1,46 @@
+
+/* code todo list*/
+
+span.removeList{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+div.scrollV {
+    overflow-y: scroll;
+    white-space: nowrap;
+    min-width: 18em;
+    max-width: 18em;
+}
+
+span, div.check {
+    cursor: pointer;
+}
+
+.card-body {
+    cursor: move;
+}
+
+div.check {
+    overflow: hidden;
+    white-space: normal;
+}
+
+div.scrollH {
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.card-block {
+    background-color: rgba(255,255,255, 0.9) !important;
+    font-size: .85em !important;
+}
+
+a:hover, span:hover{
+    color: rgba(255,255,255, 0.5);
+}
+
+.form-control{
+    font-size: 14px;
+}
