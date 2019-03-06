@@ -35,53 +35,57 @@
 
     $requete->closeCursor();
 ?>
-            <h1>Les utilisateurs avec le rôle <strong><?= $role['label']; ?></strong></h1>
-            <a href="ajout_role.php" class="btn btn-primary mb-2">Ajouter un role</a>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prénom</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Société</th>
-                    <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
 
-                if (count($utilisateurs) != 0):
-                foreach($utilisateurs as $utilisateur ):
-                ?>
-                    <tr>
-                        <th scope="row"><?= htmlentities($utilisateur['id']); ?></th>
-                        <td><?= htmlentities($utilisateur['nom']); ?></td>
-                        <td><?= htmlentities($utilisateur['prenom']); ?></td>
-                        <td><?= htmlentities($utilisateur['email']); ?></td>
-                        <td><?= (!empty($utilisateur['societe'])? htmlentities($utilisateur['societe']): 'inconnu'); ?></td>
-                        <td>
-                            <a class="btn btn-info" href="voir_utilisateur.php?id=<?= intval($utilisateur['id']); ?>">Voir</a>
-                            <a class="btn btn-warning" href="modifier_utilisateur.php?id=<?= intval($utilisateur['id']); ?>">Modifier</a>
-                            <form class="form-inline mt-2" method='POST' action='action_utilisateur.php'>
-                                <input type="hidden" name="id" value="<?= intval($utilisateur['id']); ?>">
-                                <input type="hidden" name="action" value="supprimer">
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('&Ecirc;tes-vous sûr de vouloir supprimer l\'utilisateur?')" >Supprimer</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php
-                    endforeach;
-                    else:
-                ?>
-                    <tr>
-                        <td colspan="6">Il n'y a pas d'utilisateur enregistré pour le moment</td>
-                    </tr>
-                <?php
-                    endif;
-                ?>
-                </tbody>
-            </table>
+    <div class="col-md-12 mx-auto">
+
+        <h1>Les utilisateurs avec le rôle <strong><?= $role['label']; ?></strong></h1>
+        <a href="ajout_role.php" class="btn btn-primary mb-2">Ajouter un role</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Société</th>
+                <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+
+            if (count($utilisateurs) != 0):
+            foreach($utilisateurs as $utilisateur ):
+            ?>
+                <tr>
+                    <th scope="row"><?= htmlentities($utilisateur['id']); ?></th>
+                    <td><?= htmlentities($utilisateur['nom']); ?></td>
+                    <td><?= htmlentities($utilisateur['prenom']); ?></td>
+                    <td><?= htmlentities($utilisateur['email']); ?></td>
+                    <td><?= (!empty($utilisateur['societe'])? htmlentities($utilisateur['societe']): 'inconnu'); ?></td>
+                    <td>
+                        <a class="btn btn-info" href="voir_utilisateur.php?id=<?= intval($utilisateur['id']); ?>">Voir</a>
+                        <a class="btn btn-warning" href="modifier_utilisateur.php?id=<?= intval($utilisateur['id']); ?>">Modifier</a>
+                        <form class="form-inline mt-2" method='POST' action='action_utilisateur.php'>
+                            <input type="hidden" name="id" value="<?= intval($utilisateur['id']); ?>">
+                            <input type="hidden" name="action" value="supprimer">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('&Ecirc;tes-vous sûr de vouloir supprimer l\'utilisateur?')" >Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php
+                endforeach;
+                else:
+            ?>
+                <tr>
+                    <td colspan="6">Il n'y a pas d'utilisateur enregistré pour le moment</td>
+                </tr>
+            <?php
+                endif;
+            ?>
+            </tbody>
+        </table>
+    </div>
  <?php
     require_once('../footer.php');
 ?>

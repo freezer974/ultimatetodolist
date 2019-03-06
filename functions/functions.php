@@ -110,7 +110,7 @@ function connexion_role($role){
     endif;
 
     flash('message', 'Vous n\'êtes pas autorisé à faire ça', 'danger' );
-    header('Location: index.php');
+    header('Location: /');
 }
 
 /**

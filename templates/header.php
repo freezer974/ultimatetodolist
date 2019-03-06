@@ -2,7 +2,6 @@
     //S'assurez que la session existe
     $racine = (($_SERVER['REQUEST_URI'] == '/') || ($_SERVER['REQUEST_URI'] == '\/marmiteclassroom\/')) ? substr($_SERVER['REQUEST_URI'], 1):'../';
     $racine = (($_SERVER['REQUEST_URI'] == '/index.php'))?'': $racine;
-    $url_image = getenv('S3_BUCKET_URL');
     require_once($racine . 'functions/session.php');
 
     if (isset($_GET['page'])) {
@@ -25,7 +24,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Marmiteclassroom</title>
+        <title>UltimateToDoList</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -54,7 +53,7 @@
                 </li>
             <?php endif;?>
                 <li class="nav-item <?= (($menu == 'ateliers')? 'active' : ''); ?>" >
-                     <a class="nav-link" href="/ateliers<?= ($_SESSION['role'] == 'Cuisinier')?'/voir_atelier_cuisinier.php':'' ; ?>">Ateliers <?= (($menu == 'ateliers')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                     <a class="nav-link" href="#<?= ($_SESSION['role'] == 'Cuisinier')?'':'' ; ?>">Todolist <?= (($menu == 'ateliers')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
             </ul>
 
@@ -73,10 +72,10 @@
         <?php else: ?>
             <ul class="navbar-nav ml-md-auto">
                 <li class="nav-item <?= (($menu == 'login')? 'active' : ''); ?>">
-                    <a onclick="rappellogin()" class="nav-link" href="/utilisateurs/connexion.php">Login <?= (($menu == 'login')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="/utilisateurs/connexion_utilisateur.php">Login <?= (($menu == 'login')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
                 <li class="nav-item <?= (($menu == 'inscription')? 'active' : ''); ?>">
-                    <a class="nav-link" href="/utilisateurs/inscription.php">Inscription <?= (($menu == 'inscription')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="/utilisateurs/ajout_utilisateur.php">Inscription <?= (($menu == 'inscription')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
             </ul>
         <?php endif; ?>
@@ -87,6 +86,6 @@
             <div class="col-12">
                 <?php flash( 'message' ); ?>
             </div>
-            <button onclick= "topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+            <button id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
             
 
