@@ -1,8 +1,6 @@
 <?php
     //S'assurez que la session existe
-    $racine = (($_SERVER['REQUEST_URI'] == '/') || ($_SERVER['REQUEST_URI'] == '\/marmiteclassroom\/')) ? substr($_SERVER['REQUEST_URI'], 1):'../';
-    $racine = (($_SERVER['REQUEST_URI'] == '/index.php'))?'': $racine;
-    require_once($racine . 'functions/session.php');
+    require_once(__DIR__.'/../functions/session.php');
 
     if (isset($_GET['page'])) {
         $page = intval($_GET['page']);
@@ -63,7 +61,7 @@
                     <a class="nav-link" href="#"><?= $_SESSION['nom']; ?> <span class="font-italic small">(<?= $_SESSION['role']; ?>)</span></a>
                 </li>
                 <li class="nav-item <?= (($menu == 'deconnexion')? 'active' : ''); ?>">
-                    <form class="form-inline my-2 my-lg-0" action="/utilisateurs/action_utilisateur.php" method="POST">
+                    <form class="form-inline my-2 my-lg-0" action="<?= $adresse; ?>utilisateurs/action_utilisateur.php" method="POST">
                         <input type="hidden" value='deconnexion' name='action'>
                         <button type="submit" class="btn btn-secondary">Deconnexion</button>
                     </form>
@@ -72,10 +70,10 @@
         <?php else: ?>
             <ul class="navbar-nav ml-md-auto">
                 <li class="nav-item <?= (($menu == 'login')? 'active' : ''); ?>">
-                    <a class="nav-link" href="/utilisateurs/connexion_utilisateur.php">Login <?= (($menu == 'login')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="<?= $adresse; ?>utilisateurs/connexion_utilisateur.php">Login <?= (($menu == 'login')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
                 <li class="nav-item <?= (($menu == 'inscription')? 'active' : ''); ?>">
-                    <a class="nav-link" href="/utilisateurs/ajout_utilisateur.php">Inscription <?= (($menu == 'inscription')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="<?= $adresse; ?>utilisateurs/ajout_utilisateur.php">Inscription <?= (($menu == 'inscription')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
             </ul>
         <?php endif; ?>

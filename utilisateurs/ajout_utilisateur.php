@@ -14,7 +14,6 @@
         <h1>Inscription <a href="<?= $_SERVER['HTTP_REFERER']; ?>" class="btn btn-info  mb-2">retour</a></h1>
         <?php if (count($roles)): ?>
             <form method="post" action="action_utilisateur.php">
-                <input type="hidden" name="action" value="ajouter">
                 <div class="form-group">
                     <label for="nom">Nom de l'utilisateur</label>
                     <input type="text" class="form-control" id="nom" name="nom" placeholder="ex : Brad" value="" required>
@@ -36,8 +35,8 @@
                     <input type="pasword" class="form-control" id="confirm_password" name="confirm_password" min="8" value="" required>
                 </div>
                 <div class="form-group">
-                    <label for="societe">Société</label>
-                    <input type="text" class="form-control" id="societe" name="societe" placeholder="ex : SARL PimPom" value="" >
+                    <label for="societe">Pseudo</label>
+                    <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="ex : Pseudo" value="" >
                 </div>
                 <div class="form-group">
                     <label for="id_role">Selectionner le rôle</label>
@@ -47,7 +46,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Ajouter</button>
+                <button type="submit" class="btn btn-primary" name="action" value="ajouter">Ajouter</button>
             </form>
         <?php else: ?>
             <p>Il n'y a pas de rôle. </p>
