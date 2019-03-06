@@ -1,6 +1,6 @@
 <?php
 
-    if ($_SERVER['REQUEST_URI'] == "/ultimatetodolist/"):
+    if ($_SERVER['REQUEST_URI'] == "/ultimatetodolist/" || $_SERVER['REQUEST_URI'] == "/"):
         $adresse = '';
     else:
         $adresse = '../';

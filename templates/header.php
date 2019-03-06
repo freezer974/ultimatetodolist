@@ -1,6 +1,13 @@
 <?php
+    //echo '<pre>'.var_export($_SERVER).'</pre>';
+
+    if ($_SERVER['REQUEST_URI'] == "/ultimatetodolist/" || $_SERVER['REQUEST_URI'] == "/"):
+        $adresse = '';
+    else:
+        $adresse = '../';
+    endif;
     //S'assurez que la session existe
-    require_once(__DIR__.'/../functions/session.php');
+    require_once($adresse . 'functions/session.php');
 
     if (isset($_GET['page'])) {
         $page = intval($_GET['page']);
@@ -40,7 +47,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav">
                 <li class="nav-item <?= (($menu == 'accueil')? 'active' : ''); ?>" >
-                    <a class="nav-link" href="/">Accueil <?= (($menu == 'accueil')? '<span class="sr-only">(current)</span>' : ''); ?></a>
+                    <a class="nav-link" href="<?= $adresse; ?>">Accueil <?= (($menu == 'accueil')? '<span class="sr-only">(current)</span>' : ''); ?></a>
                 </li>
             <?php if ($_SESSION['role'] == 'Admin'): ?>
                 <li class="nav-item <?= (($menu == 'roles')? 'active' : ''); ?> " >
