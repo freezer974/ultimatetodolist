@@ -19,7 +19,7 @@
                 $req = $bdd->prepare('INSERT INTO listes (nom,description,position) VALUES (:nom,:description,:position)');
                 $req->bindValue(':nom', ChaineAvecMajuscule($_POST['nom']), PDO::PARAM_STR);
                 $req->bindValue(':description', ChaineAvecMajuscule($_POST['description']), PDO::PARAM_STR);
-                $req->bindValue(':position', $_POST['position'], PDO::PARAM_int);
+                $req->bindValue(':position', $_POST['position'], PDO::PARAM_INT);
                 $req->execute();
                 $id_tache = $bdd->lastInsertId();
                 $req->closeCursor();
