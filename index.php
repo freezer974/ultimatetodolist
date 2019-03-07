@@ -1,4 +1,4 @@
-<?php $racine = (($_SERVER['REQUEST_URI'] == '/') || ($_SERVER['REQUEST_URI'] == '\/marmiteclassroom\/')) ? substr($_SERVER['REQUEST_URI'], 1):''; ?>
+<?php $racine = (($_SERVER['REQUEST_URI'] == '/') || ($_SERVER['REQUEST_URI'] == '\/ultimatetodolist\/')) ? substr($_SERVER['REQUEST_URI'], 1):''; ?>
 <?php $racine = (($_SERVER['REQUEST_URI'] == '/index.php'))?'': $racine; ?>
 <?php require_once($racine. 'templates/header.php'); ?>
 <div class="col-12">
