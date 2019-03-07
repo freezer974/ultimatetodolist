@@ -1,5 +1,35 @@
-<?php $menu = 'todolist'; ?>
-<?php require_once('../templates/header.php'); ?>
+<?php $menu = 'todolist';
+    require_once('../templates/header.php');
+    
+    if(empty($_SESSION['id'])):
+        redirection_page();
+    endif;
+
+    if (!empty($_GET['id']) && intval($_GET['id']) > 0){
+        $id = intval($_GET['id']);
+    } else {
+        redirection_page();
+    }
+
+    $menu = 'utilisateurs';
+
+    require_once('../header.php');
+    //connexion_role('Admin');
+
+    if ($_SESSION['role'] != 'Admin'):
+        $id = $_SESSION['id'];
+    endif;
+
+    require_once('../connexion_bdd.php');
+    $requete = $bdd->prepare('SELECT * FROM utilisateurs WHERE id = :id' );
+    $requete->bindValue(':id', $id, PDO::PARAM_INT);
+    $requete->execute();
+
+    if (!($utilisateurs = $requete->fetch())):
+        redirection_page();
+    endif;
+?>
+
 <div class="col-12 todolist">
     <!-- Section Todolist (modif de la suppression par un système d'archivage) -->
     <main name="main" class="flex-shrink-0">

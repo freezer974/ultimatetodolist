@@ -1,7 +1,7 @@
 <?php
 
     if(empty($_SESSION['id'])):
-        require_once('../functions.php');
+        require_once('../functions/functions.php');
         redirection_page();
     endif;
 
@@ -13,14 +13,14 @@
 
     $menu = 'utilisateurs';
 
-    require_once('../header.php');
+    require_once('../templates/header.php');
     //connexion_role('Admin');
 
     if ($_SESSION['role'] != 'Admin'):
         $id = $_SESSION['id'];
     endif;
 
-    require_once('../connexion_bdd.php');
+    require_once('../functions/connexion_bdd.php');
     $requete = $bdd->prepare('SELECT * FROM utilisateurs WHERE id = :id' );
     $requete->bindValue(':id', $id, PDO::PARAM_INT);
     $requete->execute();

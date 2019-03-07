@@ -31,6 +31,56 @@ var drake_listes = dragula({
 // on met le dernier élément trouver du container_listes dans drake_listes
 drake_listes.containers.push(container_listes.get(0));
 
+var sortableListe = container_listes;
+
+
+    var pingu='';
+        sortableListe.on('dragend', function() {
+            nodeListForEach(rows, function (index, row) {
+                //alert(row.id);
+                pingu=pingu+','+row.id;
+                alert(pingu);
+                // row.lastElementChild.textContent = index + 1;
+                // row.dataset.rowPosition = index + 1;
+            });
+            var sortedIDs=pingu;
+            pingu='';
+           // alert (sortedIDs);
+
+
+            if (sortedIDs) {
+                 alert(sortedIDs);
+                $.ajax({
+                    type: 'POST',
+                    url: 'action_liste.php',
+                    data: 'lmqSPOEhyVt87H6tBYSfdreg=' + sortedIDs + '&hjhqweuty87685gh87GCfsc6HF=' + sbds98JWUDGHKJ98yujg,
+                    success: function (tata) {
+                        alert (tata);
+                        if (tata == '1') {
+                            $("#success").show();
+                            $('#success').delay(2000).fadeOut('slow');
+                        } else {
+                            $("#failure").show();
+                            $('#failure').delay(5000).fadeOut('slow');
+                        }
+                    }
+
+
+                });
+            } else {
+                //$('#ms').html('<option value="">Select Q level first</option>');
+            }
+
+
+
+
+
+
+
+        });
+
+
+
 var count=0;
 
 // on ecoute dans body le click sur la span ajouteList
