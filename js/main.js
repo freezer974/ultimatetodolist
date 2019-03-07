@@ -61,38 +61,3 @@ $(document).ready(function() {
         form.submit();
     }    
 })
-
-// Quand l'utilisateur fait descendre la page de 20px du haut de la page, affiche le bouton
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
-    } else {
-        document.getElementById("myBtn").style.display = "none";
-    }
-}
-
-// Quand l'utilisateur clique sur le bouton, renvoie en haut de la page
-function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
-
-// apparait une alert pour le rappel
-function rappel() 
-{
-    alert("Vous pourrez bientôt réservez vos cours de cuisine après avoir finaliser votre inscription");
-}
-
-// une alert pour le rappel du login
-function rappellogin() 
-{
-    alert("N'oubliez pas de vous inscrire si vous n'avez pas encore de compte ! sinon bonne visite sur notre site ");
-}
-
-// apparait une alert pour le rappel
-function connexion_reservation() 
-{
-    return confirm('Veuillez-vous connecter pour réserver cette atelier ?');
-}

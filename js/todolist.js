@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 // on determine le container des listes de tache pour le drag and drop
 var container_taches = $('ul.drake_taches');
 
@@ -28,24 +30,33 @@ var drake_listes = dragula({
       }
 });
 
-// on met le dernier élément trouver du container_listes dans drake_listes
-drake_listes.containers.push(container_listes.get(0));
+    // on met le dernier élément trouver du container_listes dans drake_listes
+    drake_listes.containers.push(container_listes.get(0));
 
-var sortableListe = container_listes;
+    var sortableTable = drake_listes;
 
-
-    var pingu='';
-        sortableListe.on('dragend', function() {
+    var rows = container_listes.find('.scrollV');
+    console.log(rows.length);
+    var nodeListForEach = function (array, callback, scope) {
+        for (var i = 0; i < array.length; i++) {
+            callback.call(scope, i, array[i]);
+        }
+    };
+        var pingu='';
+        sortableTable.on('dragend', function() {
             nodeListForEach(rows, function (index, row) {
                 //alert(row.id);
+                console.log('index:'+index);
+                console.log('row:'+row);
+                
                 pingu=pingu+','+row.id;
                 alert(pingu);
-                // row.lastElementChild.textContent = index + 1;
-                // row.dataset.rowPosition = index + 1;
+                 //row.lastElementChild.textContent = index + 1;
+                 //row.dataset.rowPosition = index + 1;
             });
             var sortedIDs=pingu;
             pingu='';
-           // alert (sortedIDs);
+            //alert (sortedIDs);
 
 
             if (sortedIDs) {
@@ -294,3 +305,4 @@ function createSpanFa( spanClassAdd,  faClassAdd,  FaAttr = null) {
     // on retourne la span construite
     return span.append(fa);
 }
+});
