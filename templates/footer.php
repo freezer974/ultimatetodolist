@@ -21,6 +21,6 @@
         <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>    
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js"></script>
         <script src="../js/main.js"></script>
-        <!--<script src="../js/todolist.js"></script>-->
+        <script src="../js/todolist.js"></script>
     </body>
 </html>
