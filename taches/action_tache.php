@@ -13,8 +13,7 @@
         
         // test la présence
         if (!empty($_POST['action']) && !empty($_POST['nom']) && !empty($_POST['description']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])  && !empty($_POST['position'])):
-            var_dump($_POST);
-            //die('stop');
+            
             // si on a l'action ajouter
             if ($action == 'ajouter') :
                 $req = $bdd->prepare('INSERT INTO taches (nom,description,start_date,end_date,position) VALUES (:nom,:description,:start_date,:end_date, :position)');
