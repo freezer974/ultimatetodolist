@@ -64,9 +64,10 @@
                             </ul>
                             <div class="card-footer p-3">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Votre tâche ici ...">
+                                    <!--<input type="text" class="form-control" placeholder="Votre tâche ici ...">-->
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary button-addon" type="button" id="button-addon">Ajouter</button>
+                                        <!--<button class="btn btn-outline-secondary button-addon" type="button" name="action" data-target="#modal_tache" id="action">Ajouter</button>-->
+                                        <button class="btn btn-outline-secondary" type="button" name="action" data-toggle="modal"data-target="#modal_tache" id="action">Ajouter une tâche</button>
                                     </div>
                                 </div>
                             </div>
@@ -118,9 +119,9 @@
                             </ul>
                             <div class="card-footer p-3">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Votre tâche ici ...">
+                                    <!--<input type="text" class="form-control" placeholder="Votre tâche ici ...">-->
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary button-addon" type="button" id="button-addon">Ajouter</button>
+                                        <button class="btn btn-outline-secondary button-addon" type="button" >Ajouter</button>
                                     </div>
                                 </div>
                             </div>
@@ -147,12 +148,64 @@
                 <input type="text" class="form-control" name="nom">
                 <label>Description:</label>
                 <input type="text" class="form-control" name="description">
-                <input type="hidden" name="position" value="1">
+                <input type="hidden" name="position" value="">
                 <input type="submit" class="btn btn-primary" id="btn-list" value="ajouter" name="action">
             </form>
         </div>
       </div>
       <!--FIN modal-body-->
+    </div>
+  </div>
+</div>
+<!-- The Modal ajout tache -->
+
+<div class="modal fade" id="modal_tache" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <!--Header modal -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter une tâche</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <div id="dialog-form" title="Create new order">
+             <form method="POST" action="../taches/action_tache.php">
+                  <!--Nom-->
+                    <div class="form-group">
+                      <label for="nom_tâche">Nom tâche : </label>
+                      <input class="form-control"  type="text" name="nom"  id="nom_tâche" placeholder="ex:Tâche 1">
+
+                    </div>
+                    <!--Description-->
+                    <div class="form-group">
+                      <label >Description : </label>
+                      <textarea rows="2" cols="50" class="form-control" name="description" placeholder="Ajout d'une description">
+
+                      </textarea>
+                    </div>
+                    <!--Strat-date-->
+                    <div class="form-group">
+                      <label >Date début : </label>
+                      <input type="datetime-local" name="start_date">
+                    </div>
+                    <!--End-Data-->
+                    <div class="form-group">
+                      <label >Date fin : </label>
+                      <input type="datetime-local" name="end_date">
+                    </div>
+                    <!--Position-->
+                    <input type="hidden" id="position " name="position" value="1">
+                    <!--id_liste-->
+                    <input type="hidden" id="id_liste" name="id_liste" value="1">
+
+                    <!--Submit-->
+                    <input type="submit" value="ajouter" name="action" class="btn btn-primary btn-block">
+
+                  </form>
+        </div>
     </div>
   </div>
 </div>

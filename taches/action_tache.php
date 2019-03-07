@@ -13,15 +13,16 @@
         
         // test la présence
         if (!empty($_POST['action']) && !empty($_POST['nom']) && !empty($_POST['description']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])  && !empty($_POST['position'])):
-
+            var_dump($_POST);
+            //die('stop');
             // si on a l'action ajouter
             if ($action == 'ajouter') :
-                $req = $bdd->prepare('INSERT INTO taches (nom,description,start_date,end_date,position) VALUES (:nom,:description,STR_TO_DATE(:start_date,\'%d/%m/%Y\'),STR_TO_DATE(:end_date,\'%d/%m/%Y\'),:position)');
+                $req = $bdd->prepare('INSERT INTO taches (nom,description,start_date,end_date,position) VALUES (:nom,:description,:start_date,:end_date, :position)');
                 $req->bindValue(':nom', ChaineAvecMajuscule($_POST['nom']), PDO::PARAM_STR);
                 $req->bindValue(':description', ChaineAvecMajuscule($_POST['description']), PDO::PARAM_STR);
-                $req->bindValue(':start_date', $_POST['start_date'], PDO::PARAM_STR);
-                $req->bindValue(':end_date', $_POST['end_date'], PDO::PARAM_STR);
-                $req->bindValue(':position', $_POST['position'], PDO::PARAM_int);
+                $req->bindValue(':start_date', str_replace('T', " ", $_POST['start_date']).":00", PDO::PARAM_STR);
+                $req->bindValue(':end_date', str_replace('T', " ", $_POST['end_date']).":00", PDO::PARAM_STR);
+                $req->bindValue(':position', $_POST['position'], PDO::PARAM_INT);
                 $req->execute();
                 $id_tache = $bdd->lastInsertId();
                 $req->closeCursor();
