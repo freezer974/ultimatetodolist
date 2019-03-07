@@ -93,9 +93,6 @@ function countPagePourTable($count, $nbElementParPage){
  * @return mixed boolean | message flash 
  */
 function connexion_role($role){
-
-
-    
     if (is_array($role)):
         foreach($role AS $r):
             if (ChaineAvecMajuscule($r) == $_SESSION['role']):
@@ -110,7 +107,7 @@ function connexion_role($role){
     endif;
 
     flash('message', 'Vous n\'êtes pas autorisé à faire ça', 'danger' );
-    header('Location: index.php');
+    header('Location: /');
 }
 
 /**

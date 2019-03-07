@@ -1,8 +1,8 @@
 <?php
     // appel à la session
-    require_once('../session.php');
+    require_once('../functions/session.php');
     //appel à la base de donnée
-    require_once('../connexion_bdd.php');
+    require_once('../functions/connexion_bdd.php');
 
     //echo '<pre>' . var_export($_POST, true) . '</pre>';
     //die();
@@ -13,27 +13,26 @@
         
         // test la présence
         if (!empty($_POST['action']) && !empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['password'])):
-            $societe = (!empty($_POST['societe']))?$_POST['societe']:null;
 
             // si on a l'action ajouter
             if ($action == 'ajouter') :
 
                 if ($_POST['password'] == $_POST['confirm_password']):
 
-                    $req = $bdd->prepare('SELECT email FROM utilisateurs FROM email = :email');
+                    $req = $bdd->prepare('SELECT email FROM utilisateurs WHERE email = :email');
                     $req->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
                     $req->execute();
                     $utilisateur = $req->fetch();
                     $req->closeCursor();
 
-                    if ($utilisateurs):
+                    if (!$utilisateurs):
 
-                        $req = $bdd->prepare('INSERT INTO utilisateurs (nom,prenom,email,password,societe) VALUES (:nom,:prenom,:email,:password,:societe)');
+                        $req = $bdd->prepare('INSERT INTO utilisateurs (nom,prenom,email,password,pseudo) VALUES (:nom,:prenom,:email,:password,:pseudo)');
                         $req->bindValue(':nom', ChaineAvecMajuscule($_POST['nom']), PDO::PARAM_STR);
                         $req->bindValue(':prenom', ChaineAvecMajuscule($_POST['prenom']), PDO::PARAM_STR);
                         $req->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
                         $req->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT), PDO::PARAM_STR);
-                        $req->bindValue(':societe', $societe, PDO::PARAM_STR);
+                        $req->bindValue(':pseudo', $_POST['pseudo'], PDO::PARAM_STR);
                         $req->execute();
                         $id_utilisateur = $bdd->lastInsertId();
                         $req->closeCursor();
@@ -44,7 +43,7 @@
                         $req->execute();
                         $req->closeCursor();
 
-                        flash('message', '<strong>'. htmlentities($_POST['nom']) . ' ' . htmlentities($_POST['prenom']) .'</strong> vous êtes ajouter');
+                        flash('message', '<strong>'. htmlentities($_POST['nom']) . ' ' . htmlentities($_POST['prenom']) .'</strong> vous êtes ajouté');
                         redirection_page();
                     else:
                         flash('message', 'Un utilisateur avec le même email existe dans notre base.', 'danger');
@@ -60,12 +59,12 @@
             if (($action == 'modifier') && !empty($_POST['id']) && intval($_POST['id']) > 0) :
 
                 //préparation de la requête, mise au norme des variable et envoye
-                $req = $bdd->prepare('UPDATE utilisateurs SET nom = :nom, prenom = :prenom, email = :email, societe = :societe  WHERE id = :id');
+                $req = $bdd->prepare('UPDATE utilisateurs SET nom = :nom, prenom = :prenom, email = :email, pseudo = :pseudo  WHERE id = :id');
                 $req->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
                 $req->bindValue(':nom', ChaineAvecMajuscule($_POST['nom']), PDO::PARAM_STR);
                 $req->bindValue(':prenom', ChaineAvecMajuscule($_POST['prenom']), PDO::PARAM_STR);
                 $req->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
-                $req->bindValue(':societe', $societe, PDO::PARAM_STR);
+                $req->bindValue(':pseudo', $_POST['pseudo'], PDO::PARAM_STR);
                 $req->execute();
                 $req->closeCursor();
 
@@ -89,7 +88,7 @@
         if ($action == 'connexion'):
 
             //  Récupération des informtions l'utilisateur et de son role
-            $req = $bdd->prepare('SELECT u.id, CONCAT(u.nom, \' \', u.prenom) AS nom, u.societe, ru.id_role, r.label, password 
+            $req = $bdd->prepare('SELECT u.id, CONCAT(u.nom, \' \', u.prenom) AS nom, u.pseudo, ru.id_role, r.label, password 
                                     FROM utilisateurs u
                                     INNER JOIN roles_utilisateurs ru 
                                         ON u.id = ru.id_utilisateur
@@ -111,7 +110,6 @@
                 if ($isPasswordCorrect):
                     $_SESSION['id'] = $resultat['id'];
                     $_SESSION['nom'] = $resultat['nom'];
-                    $_SESSION['societe'] = $resultat['societe'];
                     $_SESSION['role'] = $resultat['label'];
                     $_SESSION['email'] = htmlentities($_POST['email']);
                     

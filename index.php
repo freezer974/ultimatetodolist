@@ -1,8 +1,7 @@
-<?php $racine = (($_SERVER['REQUEST_URI'] == '/') || ($_SERVER['REQUEST_URI'] == '\/ultimatetodolist\/')) ? substr($_SERVER['REQUEST_URI'], 1):''; ?>
-<?php $racine = (($_SERVER['REQUEST_URI'] == '/index.php'))?'': $racine; ?>
-<?php require_once($racine. 'templates/header.php'); ?>
+
+<?php require_once('templates/header.php'); ?>
 <div class="col-12">
-    <h1>Ultimatetodolist, quand ta liste de tache prend de la couleur !</h1>
-    <p>Page d'acceuil avec affichage des listes des tâche</p>     
+    <h1>Ultimatetodolist, quand ta liste de tâche prend de la couleur !</h1>
+    <p>Merci de vous connecter pour avoir accès à vos todolists</p>     
 </div>
-<?php require_once($racine. 'templates/footer.php'); ?>
+<?php require_once('templates/footer.php'); ?>

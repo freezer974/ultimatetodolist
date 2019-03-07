@@ -1,9 +1,11 @@
 <?php
     $menu = 'roles';
 
-    require_once('../header.php');
+    require_once('../templates/header.php');
     connexion_role('admin');
 ?>
+    <div class="col-md-6 mx-auto">
+
             <h1>Les rôles</h1>
             <a href="../roles/ajout_role.php" class="btn btn-primary mb-2">Ajouter un rôle</a>
             <table class="table table-striped">
@@ -16,7 +18,7 @@
                 </thead>
                 <tbody>
                 <?php
-                    require_once('../connexion_bdd.php');
+                    require_once('../functions/connexion_bdd.php');
                     $requete = $bdd->prepare('SELECT * FROM roles ORDER BY id'.$limit );
                     $requete->execute();
                     $roles = $requete->fetchAll();
@@ -51,6 +53,7 @@
                 ?>
                 </tbody>
             </table>
+            </div>
  <?php
-    require_once('../footer.php');
+    require_once('../templates/footer.php');
 ?>

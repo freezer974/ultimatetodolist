@@ -1,9 +1,9 @@
 <?php
     // appel à la session
-    require_once('../session.php');
+    require_once('../functions/session.php');
     connexion_role('Admin');
     //appel à la base de donnée
-    require_once('../connexion_bdd.php');
+    require_once('../functions/connexion_bdd.php');
 
     //echo '<pre>' . var_export($_POST, true) . '</pre>';
     //die();
