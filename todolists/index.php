@@ -10,7 +10,7 @@
                         <div class="row d-flex align-items-center">
                             <p class="h5 font-weight-bold">To do list</p>
                             <span class="ajouteList mx-2 text-primary h5">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                <i class="fa fa-plus-circle" aria-hidden="true" data-toggle="modal" data-target ="#modal_liste"></i>
                             </span>
                         </div>
                     </div>
@@ -128,7 +128,36 @@
                     </div>
                 </div>
             </div>
+            <!-- The Modal ajout liste-->
+
+<div class="modal fade" id="modal_liste" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--Header modal -->
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter une liste</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div id="dialog-form-list" title="Ajouter une liste">
+            <form id="formList" method="POST" action="../listes/action_liste.php">
+                <label>Nom:</label>
+                <input type="text" class="form-control" name="nom">
+                <label>Description:</label>
+                <input type="text" class="form-control" name="description">
+                <input type="hidden" name="position" value="1">
+                <input type="submit" class="btn btn-primary" id="btn-list" value="ajouter" name="action">
+            </form>
+        </div>
+      </div>
+      <!--FIN modal-body-->
+    </div>
+  </div>
+</div>
         </section>
+        
     </main>    
 </div>
 <?php require_once('../templates/footer.php'); ?>
