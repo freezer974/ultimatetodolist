@@ -7,12 +7,7 @@
 
     $menu = 'todolist';
 
-    require_once('../templates/header.php');
-    //connexion_role('Admin');
-
-    if ($_SESSION['role'] != 'Admin'):
-        $id = $_SESSION['id'];
-    endif;
+    connexion_role('Membre');
 
     $position_liste = 1;
     $position_tache = 1;
@@ -98,10 +93,14 @@
       <div class="modal-body">
          <div id="dialog-form-list" title="Ajouter une liste">
             <form id="formList" method="POST" action="../listes/action_liste.php">
-                <label>Nom:</label>
-                <input type="text" class="form-control" name="nom">
-                <label>Description:</label>
-                <input type="text" class="form-control" name="description">
+                <div class="form-group">
+                    <label>Nom:</label>
+                    <input type="text" class="form-control" name="nom">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" class="form-control" name="description">
+                </div>
                 <input type="hidden" name="position" id="position" value="">
                 <input type="submit" class="btn btn-primary" id="btn-list" value="ajouter" name="action">
             </form>
