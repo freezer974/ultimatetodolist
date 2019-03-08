@@ -72,6 +72,49 @@
             flash('message', 'La tâche a été supprimé');
             redirection_page();
         endif; 
+
+        if (($action == 'updateTacheOrder') && !empty($_POST['taches'])):
+            // On récupère le tableau des ID de chaque élément
+
+            $tab = explode(',',$_POST['taches']);
+
+            foreach($tab as $cle => $value){
+
+                $element[$cle] = explode(':',$tab[$cle]);
+            }
+
+
+
+            // On indique le premier indice de position souhaité
+            $req = $bdd->prepare('UPDATE taches SET position = :position WHERE id=:id');
+
+            // Et on met à jour la base de données
+            foreach($element as $cle => $id)
+            {
+                $req->bindValue(':position', $element[$cle][2], PDO::PARAM_INT);
+                $req->bindValue(':id', $element[$cle][1], PDO::PARAM_INT);
+                $req->execute();
+            }
+            $req->closeCursor();
+
+            // On indique le premier indice de position souhaité
+            $req = $bdd->prepare('UPDATE listes_taches SET id_liste = :id_liste, id_tache = :id_tache WHERE id_tache = :id_tache_changer');
+
+            // Et on met à jour la base de données
+            foreach($element as $cle => $id)
+            {
+                $req->bindValue(':id_liste', $element[$cle][0], PDO::PARAM_INT);
+                $req->bindValue(':id_tache', $element[$cle][1], PDO::PARAM_INT);
+                $req->bindValue(':id_tache_changer', $element[$cle][1], PDO::PARAM_INT);
+                $req->execute();
+            }
+            $req->closeCursor();
+
+
+            $return_arr[] = array("success" => 'les taches ont changés de position dans la liste');
+            echo json_encode($return_arr);
+            return;
+        endif;
     endif;
 
     flash('message', 'Les données ne sont pas parvenues', 'danger');

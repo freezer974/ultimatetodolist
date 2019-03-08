@@ -17,7 +17,7 @@ var drake_taches = dragula({
 drake_taches.containers.push(container_taches.get(0));
 
 // on determine le container des listes pour le drag and drop
-var container_listes = $('ul.drake_listes');
+var container_listes = $('.drake_listes');
 
 // on creer la variable qui va accueillir toutes les taches déplacables
 var drake_listes = dragula({
@@ -33,62 +33,111 @@ var drake_listes = dragula({
     // on met le dernier élément trouver du container_listes dans drake_listes
     drake_listes.containers.push(container_listes.get(0));
 
-    var sortableTable = drake_listes;
+    var rowsListe = container_listes.children();
 
-    var rows = container_listes.find('.scrollV');
-    console.log(rows.length);
-    var nodeListForEach = function (array, callback, scope) {
-        for (var i = 0; i < array.length; i++) {
-            callback.call(scope, i, array[i]);
-        }
-    };
-        var pingu='';
-        sortableTable.on('dragend', function() {
-            nodeListForEach(rows, function (index, row) {
-                //alert(row.id);
-                console.log('index:'+index);
-                console.log('row:'+row);
-                
-                pingu=pingu+','+row.id;
-                alert(pingu);
-                 //row.lastElementChild.textContent = index + 1;
-                 //row.dataset.rowPosition = index + 1;
-            });
-            var sortedIDs=pingu;
-            pingu='';
-            //alert (sortedIDs);
+    drake_listes.on('dragend', function() {
+        var listes="";
 
+        rowsListe.each(function(){
+            // On actualise sa position
+            index = parseInt($(this).index()+1);
+            // On la met à jour dans la page
+            $(this).attr("data-position", index);
+        })
 
-            if (sortedIDs) {
-                 alert(sortedIDs);
-                $.ajax({
-                    type: 'POST',
-                    url: 'action_liste.php',
-                    data: 'lmqSPOEhyVt87H6tBYSfdreg=' + sortedIDs + '&hjhqweuty87685gh87GCfsc6HF=' + sbds98JWUDGHKJ98yujg,
-                    success: function (tata) {
-                        alert (tata);
-                        if (tata == '1') {
-                            $("#success").show();
-                            $('#success').delay(2000).fadeOut('slow');
-                        } else {
-                            $("#failure").show();
-                            $('#failure').delay(5000).fadeOut('slow');
-                        }
-                    }
+        container_listes.children().each(function(){
 
+            // On la met à jour dans la page
+           listes += $(this).attr("data-id")+",";
+        })
+        var order = 'listes='+listes.substring(0,listes.length  -1)+'&action=updateListeOrder';
 
-                });
-            } else {
-                //$('#ms').html('<option value="">Select Q level first</option>');
+        $.post("../listes/action_liste.php", order, function(theResponse)
+        {
+            var obj = JSON.parse(theResponse);
+            for(var i=0;i<obj.length;i++){
+                alert = afficheAlert(Object.keys(obj[i]), obj[i].success);
             }
-
-
-
-
-
-
-
         });
+
+    });
+
+    drake_taches.on('drop', function(el, target, source, sibling){
+        console.log(el);
+        console.log(target);
+        console.log(source);
+        console.log(sibling);
+
+        if ($(target).attr('id') == $(source).attr('id')){
+            var taches="";
+            var position=1;
+            $(target).children().each(function(){
+                // On actualise sa position
+                index = parseInt($(this).index()+1);
+                // On la met à jour dans la page
+                $(this).attr("data-position", index);
+            });
+            $(target).children().each(function(){
+
+                // On la met à jour dans la page
+               taches += $(target).attr('id')+':'+$(this).attr("data-id")+':'+position+",";
+               position++;
+            })
+            var order = 'taches='+taches.substring(0,taches.length  -1)+'&action=updateTacheOrder';
+    
+            $.post("../taches/action_tache.php", order, function(theResponse)
+            {
+                var obj = JSON.parse(theResponse);
+                for(var i=0;i<obj.length;i++){
+                    alert = afficheAlert(Object.keys(obj[i]), obj[i].success);
+                }
+            });
+
+        } else {
+            var taches="";
+            var position=1;
+            $(target).children().each(function(){
+                // On actualise sa position
+                index = parseInt($(this).index()+1);
+                // On la met à jour dans la page
+                $(this).attr("data-position", index);
+            });
+            $(target).children().each(function(){
+
+                // On la met à jour dans la page
+               taches += $(target).attr('id')+':'+$(this).attr("data-id")+':'+position+",";
+               position++;
+            })
+            var position=1;
+            $(source).children().each(function(){
+                // On actualise sa position
+                index = parseInt($(this).index()+1);
+                // On la met à jour dans la page
+                $(this).attr("data-position", index);
+            });
+            $(source).children().each(function(){
+
+                // On la met à jour dans la page
+               taches += $(source).attr('id')+':'+$(this).attr("data-id")+':'+position+",";
+               position++;
+
+            })
+            
+
+            var order = 'taches='+taches.substring(0,taches.length  -1)+'&action=updateTacheOrder';
+    
+            $.post("../taches/action_tache.php", order, function(theResponse)
+            {
+                var obj = JSON.parse(theResponse);
+                for(var i=0;i<obj.length;i++){
+                    alert = afficheAlert(Object.keys(obj[i]), obj[i].success);
+                }
+            });
+        }
+
+       
+
+    });
 
 
 
@@ -304,5 +353,17 @@ function createSpanFa( spanClassAdd,  faClassAdd,  FaAttr = null) {
     
     // on retourne la span construite
     return span.append(fa);
+}
+
+function afficheAlert(alertClass, message){
+    var alert = $('<div>');
+        alert.addClass('alert alert-dismissible fade show alert-'+alertClass);
+        alert.attr('id', 'message');
+        alert.attr('role', 'alert');
+        alert.append(message);
+        alert.append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        $('.message').append(alert).fadeTo(4000, 500).slideUp(500, function(){
+            $("#message").slideUp(500);
+        });
 }
 });

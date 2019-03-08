@@ -10,36 +10,28 @@ $(document).ready(function() {
         $("#message").slideUp(500);
     });
 
-    // fonction pour rendre visible et invisible
-    $("label").click(function (elem) {
-        var value;
-        if ( $(this).hasClass( "active" ) )
-        {
-            value = $(this)
-                .removeClass('btn-secondary')
-                .addClass('btn-success')
-                .find('input').attr('checked', 'checked').val();
-                $(this).find('span').text('visible');
-        } else {            
-            value = $(this)
-                .removeClass('btn-success')
-                .addClass('btn-secondary')
-                .find('input').removeAttr('checked','').val();
-                $(this).find('span').text('non');
-        }
-        var params = [];
-        params['id'] = value;
-        params['titre'] = $(this).find('input').attr('data-titre');
+    $('#modal_liste').on('show.bs.modal', function (event) {
+        var a = $(event.relatedTarget); // Button that triggered the modal
+        var position = $('.drake_listes').children().length+1;
+        console.log(position);
 
-        post_en_url('../ateliers/atelier_visible.php', params);
-       
-     });
-     //fin visible/invisible
+        var modal = $(this);
+        modal.find('#position').attr('value', position);
+    });
 
-    $('.next').click(function(){ $('.carousel').carousel('next');return false; });
-    $('.prev').click(function(){ $('.carousel').carousel('prev');return false; });
+    $('#modal_tache').on('show.bs.modal', function (event) {
+        var a = $(event.relatedTarget); // Button that triggered the modal
+        var idListe = a.data('idliste') // Extract info from data-* attributes
+        var nomListe = a.data('nomliste') // Extract info from data-* attributes
+        var position = ($('[data-idliste="'+idListe+'"]').closest('.card').find('li').length)+1;
 
-    $('.carousel').carousel();
+        var modal = $(this);
+        modal.find('.modal-title')
+            .text('Ajouter une tâche dans la liste ' + nomListe)
+
+        modal.find('#position').attr('value', position);
+        modal.find('#id_liste').attr('value', idListe);
+    });
 
     function post_en_url(url, parametres) {
         //Création dynamique du formulaire

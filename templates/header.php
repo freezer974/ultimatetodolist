@@ -94,7 +94,7 @@
     </nav>
     <div class="container">
         <div class="row mt-3">
-            <div class="col-12">
+            <div class="col-12 message">
                 <?php flash( 'message' ); ?>
             </div>
             

@@ -14,11 +14,15 @@
         $id = $_SESSION['id'];
     endif;
 
+    $position_liste = 1;
+    $position_tache = 1;
+
     require_once('../functions/connexion_bdd.php');
-    $requete = $bdd->prepare('SELECT l.id, l.nom, l.description, l.position FROM listes l INNER JOIN listes_utilisateurs ON id_liste = l.id WHERE id_utilisateur = :id ORDER BY position ASC' );
+    $requete = $bdd->prepare('SELECT l.id, l.nom, l.description, l.position FROM listes l INNER JOIN listes_utilisateurs lu ON lu.id_liste = l.id WHERE lu.id_utilisateur = :id ORDER BY position ASC' );
     $requete->bindValue(':id', $_SESSION["id"], PDO::PARAM_INT);
     $requete->execute();
     $listes = $requete->fetchAll();
+    $requete->closeCursor();
 ?>
 
 <div class="col-12 todolist">
@@ -40,63 +44,45 @@
             <div class="container-fluid scrollH">
                 <div class="row flex-row flex-nowrap card-deck drake_listes">
                 <?php foreach($listes as $liste): ?>
-                    <div class="ml-4 mb-4 scrollV">
+                    <div class="ml-4 mb-4 scrollV" data-position="<?= $position_liste++; ?>" data-id="<?= $liste['id']; ?>">
                         <div class="card card-block m-0">
                             <div class="card-body p-2">
                                 <p class="card-title justify-content-between d-flex align-items-center font-weight-bold h6 mb-1"><?= $liste['nom']; ?></p>
                                 <span class="removeList mr-2 mt-2"><i class="fa fa-times-circle text-danger" aria-hidden="true"></i></span>
-                                <p class="card-text text-muted mb-2"><?= $liste['description']; ?></p>
+                                <p class="card-text text-muted mb-2 text-truncate"><?= $liste['description']; ?></p>
                             </div>            
-                            <ul class="list-group list-group-flush drake_taches">
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                    <div class="check w-100">
-                                        <span class="checkbox"><i class="fa fa-square-o text-muted" aria-hidden="true"></i></span>
-                                        Walk the dog this evening
-                                    </div>
-                                    <span class="archive text-danger d-none"><i class="fa fa-archive" aria-hidden="true"></i></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                    <div class="check w-100">
-                                        <span class="checkbox"><i class="fa fa-check-square-o mr-2 text-success" aria-hidden="true"></i></span>
-                                        Go shopping at 3 PM
-                                    </div>
-                                    <span class="archive text-danger"><i class="fa fa-archive" aria-hidden="true"></i></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                    <div class="check w-100">
-                                        <span class="checkbox"><i class="fa fa-square-o text-muted" aria-hidden="true"></i></span>
-                                        Sleep well tonight
-                                    </div>                    
-                                    <span class="archive text-danger d-none"><i class="fa fa-archive" aria-hidden="true"></i></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                    <div class="check w-100">
-                                        <span class="checkbox"><i class="fa fa-square-o text-muted" aria-hidden="true"></i></span>
-                                        Keep coding 'till you're dead
-                                    </div>
-                                    <span class="archive text-danger d-none"><i class="fa fa-archive" aria-hidden="true"></i></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                    <div class="check w-100">
-                                        <span class="checkbox"><i class="fa fa-square-o text-muted" aria-hidden="true"></i></span>
-                                        Enjoy every moment you have
-                                    </div>                 
-                                    <span class="archive text-danger d-none"><i class="fa fa-archive" aria-hidden="true"></i></span>
-                                </li>
+                            <ul class="list-group list-group-flush drake_taches py-1 b-none" id="<?= $liste['id']; ?>">
+                                
+                                <?php $requete = $bdd->prepare('SELECT t.id, t.nom, t.description, t.start_date, t.end_date, t.position 
+                                                                    FROM taches t 
+                                                                    INNER JOIN listes_taches tl 
+                                                                        ON tl.id_tache = t.id 
+                                                                    WHERE tl.id_liste = :id 
+                                                                    ORDER BY position ASC' ); ?>
+                                <?php $requete->bindValue(':id', $liste['id'], PDO::PARAM_INT); ?>
+                                <?php $requete->execute(); ?>
+                                <?php $taches = $requete->fetchAll(); ?>
+                                <?php $requete->closeCursor(); ?>
+                                
+                                <?php foreach($taches as $tache): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center p-2" data-position="<?= $position_tache++; ?>" data-id="<?= $tache['id']; ?>" data-liste_id="<?= $liste['id']; ?>">
+                                        <div class="check w-100">
+                                            <span class="checkbox"><i class="fa fa-square-o text-muted" aria-hidden="true"></i></span>
+                                            <?= $tache['nom']; ?>
+                                        </div>
+                                        <span class="archive text-danger d-none"><i class="fa fa-archive" aria-hidden="true"></i></span>
+                                    </li>
+                                <?php endforeach; ?>
+                                
                             </ul>
-                            <div class="card-footer p-3">
-                                <div class="input-group">
-                                    <!--<input type="text" class="form-control" placeholder="Votre tâche ici ...">-->
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary button-addon" type="button" >Ajouter</button>
-                                    </div>
-                                </div>
+                            <div class="card-footer text-center bg-white border-top-0">
+                                <div class="d-inline p-1  border-success bg-success text-white rounded" name="action" data-toggle="modal" data-position="1" data-target="#modal_tache" data-idliste="<?= $liste['id']; ?>" data-nomliste="<?= $liste['nom']; ?>" id="action" value="ajouter">Ajouter une tâche</div> 
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
+                <?php endforeach; ?>
             </div>
+        </div>
             <!-- The Modal ajout liste-->
 
 <div class="modal fade" id="modal_liste" tabindex="-1" role="dialog" aria-hidden="true">
@@ -116,7 +102,7 @@
                 <input type="text" class="form-control" name="nom">
                 <label>Description:</label>
                 <input type="text" class="form-control" name="description">
-                <input type="hidden" name="position" value="">
+                <input type="hidden" name="position" id="position" value="">
                 <input type="submit" class="btn btn-primary" id="btn-list" value="ajouter" name="action">
             </form>
         </div>
@@ -143,8 +129,8 @@
              <form method="POST" action="../taches/action_tache.php">
                   <!--Nom-->
                     <div class="form-group">
-                      <label for="nom_tâche">Nom tâche : </label>
-                      <input class="form-control"  type="text" name="nom"  id="nom_tâche" placeholder="ex:Tâche 1">
+                      <label for="nom_tache">Nom tâche : </label>
+                      <input class="form-control"  type="text" name="nom"  id="nom_tache" placeholder="ex:Tâche 1">
 
                     </div>
                     <!--Description-->
@@ -165,9 +151,9 @@
                       <input type="datetime-local" name="end_date">
                     </div>
                     <!--Position-->
-                    <input type="hidden" id="position " name="position" value="1">
+                    <input type="hidden" id="position" name="position" value="">
                     <!--id_liste-->
-                    <input type="hidden" id="id_liste" name="id_liste" value="1">
+                    <input type="hidden" id="id_liste" name="id_liste" value="">
 
                     <!--Submit-->
                     <input type="submit" value="ajouter" name="action" class="btn btn-primary btn-block">

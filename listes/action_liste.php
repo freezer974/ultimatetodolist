@@ -19,7 +19,7 @@
                 $req = $bdd->prepare('INSERT INTO listes (nom,description,position) VALUES (:nom,:description,:position)');
                 $req->bindValue(':nom', ChaineAvecMajuscule($_POST['nom']), PDO::PARAM_STR);
                 $req->bindValue(':description', ChaineAvecMajuscule($_POST['description']), PDO::PARAM_STR);
-                $req->bindValue(':position', intval($_POST['position']), PDO::PARAM_INT);
+                $req->bindValue(':position', $_POST['position'], PDO::PARAM_INT);
                 $req->execute();
                 $id_liste = $bdd->lastInsertId();
                 $req->closeCursor();
@@ -65,6 +65,30 @@
             flash('message', 'La tâche a été supprimé');
             redirection_page();
         endif; 
+
+        if (($action == 'updateListeOrder') && !empty($_POST['listes'])):
+            // On récupère le tableau des ID de chaque élément
+            $elements = explode(',',$_POST['listes']);
+            
+            // On indique le premier indice de position souhaité
+            $position = 1;
+
+            $req = $bdd->prepare('UPDATE listes SET position = :position WHERE id=:id');
+
+            // Et on met à jour la base de données
+            foreach($elements as $cle => $id)
+            {
+                $req->bindValue(':position', $position, PDO::PARAM_INT);
+                $req->bindValue(':id', $id, PDO::PARAM_INT);
+                $req->execute();
+                $position++;
+            }
+            $req->closeCursor();
+
+            $return_arr[] = array("success" => 'les listes ont changés de position');
+            echo json_encode($return_arr);
+            return;
+        endif;
     endif;
 
     flash('message', 'Les données ne sont pas parvenues', 'danger');
