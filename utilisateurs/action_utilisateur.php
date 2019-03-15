@@ -143,7 +143,7 @@
                 setcookie('password', '');
             endif;
 
-            redirection_page();
+            redirection_page('/');
         endif;
 
         // si on a l'action supprimer
